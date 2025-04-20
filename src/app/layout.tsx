@@ -1,34 +1,25 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { ReactNode } from "react";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Use Next.js's built-in type
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Posto 10",
-  description: "Lanchonete e churrascaria Posto 10",
+  title: "Mini Delivery",
+  description: "Your app description",
 };
 
+// Use the inferred props type from Next.js
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  types,
+}: {
+  children: ReactNode;
+  types: any;
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
