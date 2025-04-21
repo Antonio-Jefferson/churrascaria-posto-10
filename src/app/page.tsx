@@ -14,6 +14,11 @@ import {
 import { CartItem, MenuItem } from "./@types/types";
 import { categories, menu, pizzaFlavors } from "./mocks/mocks";
 import Header from "./components/Header";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -66,24 +71,26 @@ export default function Home() {
 
   return (
     <main className="p-6 relative">
-      <div className="flex flex-col fixed w-full left-0 top-0 px-4 pt-4 bg-white">
+      <div className="flex flex-col fixed w-full left-0 top-0 px-4 pt-4 z-40 bg-white">
         <Header cart={cart} setCart={setCart} />
 
         {/* Botões de Categoria */}
-        <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant="outline"
-              onClick={() => scrollToCategory(category.id)}
-              className="flex-shrink-0 w-max"
-            >
-              {category.name}
-            </Button>
-          ))}
-        </div>
+        <Carousel opts={{ align: "start" }} className="mb-6">
+          <CarouselContent className="flex gap-2">
+            {categories.map((category) => (
+              <CarouselItem key={category.id} className="basis-auto">
+                <Button
+                  variant="outline"
+                  onClick={() => scrollToCategory(category.id)}
+                  className="w-max"
+                >
+                  {category.name}
+                </Button>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </div>
-
       {/* Modal */}
       <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
         <DialogContent>
@@ -204,8 +211,7 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      <div className="mt-26">
-        {/* Seções por Categoria */}
+      <div className="mt-32">
         {categories.map((category) => (
           <div
             key={category.id}
@@ -215,32 +221,40 @@ export default function Home() {
             }}
           >
             <h2 className="text-xl font-bold mb-4">{category.name}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {menu
-                .filter((item) => item.category === category.id)
-                .map((item) => (
-                  <Card key={item.id} className="cursor-pointer">
-                    <CardContent
-                      className="p-4"
-                      onClick={() => setSelectedItem(item)}
+
+            <Carousel className="w-full">
+              <CarouselContent>
+                {menu
+                  .filter((item) => item.category === category.id)
+                  .map((item) => (
+                    <CarouselItem
+                      key={item.id}
+                      className="md:basis-1/3 lg:basis-1/4"
                     >
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        width={300}
-                        height={200}
-                        className="rounded-md object-cover mx-auto mb-2"
-                      />
-                      <h2 className="text-lg font-semibold text-center">
-                        {item.name}
-                      </h2>
-                      <p className="text-sm text-muted-foreground text-center">
-                        R$ {item.price.toFixed(2)}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-            </div>
+                      <Card className="cursor-pointer h-full">
+                        <CardContent
+                          className="p-4"
+                          onClick={() => setSelectedItem(item)}
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={300}
+                            height={200}
+                            className="rounded-md object-cover mx-auto mb-2"
+                          />
+                          <h2 className="text-lg font-semibold text-center">
+                            {item.name}
+                          </h2>
+                          <p className="text-sm text-muted-foreground text-center">
+                            R$ {item.price.toFixed(2)}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         ))}
       </div>
