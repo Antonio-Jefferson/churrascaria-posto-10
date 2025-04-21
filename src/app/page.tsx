@@ -65,21 +65,23 @@ export default function Home() {
   };
 
   return (
-    <main className="p-6">
-      <Header cart={cart} setCart={setCart} />
+    <main className="p-6 relative">
+      <div className="flex flex-col fixed w-full left-0 top-0 px-4 pt-4 bg-white">
+        <Header cart={cart} setCart={setCart} />
 
-      {/* Botões de Categoria */}
-      <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-        {categories.map((category) => (
-          <Button
-            key={category.id}
-            variant="outline"
-            onClick={() => scrollToCategory(category.id)}
-            className="flex-shrink-0 w-max"
-          >
-            {category.name}
-          </Button>
-        ))}
+        {/* Botões de Categoria */}
+        <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          {categories.map((category) => (
+            <Button
+              key={category.id}
+              variant="outline"
+              onClick={() => scrollToCategory(category.id)}
+              className="flex-shrink-0 w-max"
+            >
+              {category.name}
+            </Button>
+          ))}
+        </div>
       </div>
 
       {/* Modal */}
@@ -202,44 +204,46 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Seções por Categoria */}
-      {categories.map((category) => (
-        <div
-          key={category.id}
-          className="mb-8"
-          ref={(el) => {
-            categoryRefs.current[category.id] = el;
-          }}
-        >
-          <h2 className="text-xl font-bold mb-4">{category.name}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {menu
-              .filter((item) => item.category === category.id)
-              .map((item) => (
-                <Card key={item.id} className="cursor-pointer">
-                  <CardContent
-                    className="p-4"
-                    onClick={() => setSelectedItem(item)}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      width={300}
-                      height={200}
-                      className="rounded-md object-cover mx-auto mb-2"
-                    />
-                    <h2 className="text-lg font-semibold text-center">
-                      {item.name}
-                    </h2>
-                    <p className="text-sm text-muted-foreground text-center">
-                      R$ {item.price.toFixed(2)}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+      <div className="mt-26">
+        {/* Seções por Categoria */}
+        {categories.map((category) => (
+          <div
+            key={category.id}
+            className="mb-8"
+            ref={(el) => {
+              categoryRefs.current[category.id] = el;
+            }}
+          >
+            <h2 className="text-xl font-bold mb-4">{category.name}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {menu
+                .filter((item) => item.category === category.id)
+                .map((item) => (
+                  <Card key={item.id} className="cursor-pointer">
+                    <CardContent
+                      className="p-4"
+                      onClick={() => setSelectedItem(item)}
+                    >
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        width={300}
+                        height={200}
+                        className="rounded-md object-cover mx-auto mb-2"
+                      />
+                      <h2 className="text-lg font-semibold text-center">
+                        {item.name}
+                      </h2>
+                      <p className="text-sm text-muted-foreground text-center">
+                        R$ {item.price.toFixed(2)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </main>
   );
 }
