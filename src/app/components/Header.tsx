@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ShoppingCart } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { CartItem, FormData } from "../@types/types";
+import Image from "next/image";
 
 export default function Header({
   cart,
@@ -98,7 +99,13 @@ export default function Header({
 
   return (
     <header className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-bold">Posto 10</h1>
+      <Image
+        src="/logo.png"
+        alt="Logo"
+        width={80}
+        height={80}
+        className="object-contain"
+      />
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline">
@@ -111,7 +118,7 @@ export default function Header({
             {cart.map((item) => (
               <div
                 key={`${item.id}-${item.flavors?.join()}`}
-                className="mb-2 flex justify-between items-center"
+                className="mb-2 flex-col justify-between items-center"
               >
                 <span>
                   {item.qty}x {item.name}
@@ -140,10 +147,10 @@ export default function Header({
               </div>
             ))}
           </div>
-          <p className="mt-4 p-6 font-bold">Total: R$ {total.toFixed(2)}</p>
+          <p className="mt-4 p-2 font-bold">Total: R$ {total.toFixed(2)}</p>
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-xs m-auto">Finalizar pedido</Button>
+              <Button className="w-[200px] mx-auto">Finalizar pedido</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogTitle>Dados de Entrega</DialogTitle>
